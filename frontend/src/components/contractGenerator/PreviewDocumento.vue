@@ -8,19 +8,32 @@ const { t } = useLocale()
 </script>
 
 <template>
-  <Transition name="preview-fade" mode="out-in">
-    <!-- La key es solo el estilo (no el contenido): asi el texto se actualiza
-         en el lugar mientras el usuario escribe (sin parpadeo), y solo se
-         dispara la transicion cuando cambia el estilo elegido (paso 3). -->
-    <div v-if="content" :key="styleId ?? 'sin-estilo'" class="preview-documento" :class="`estilo-${styleId}`">
-      <h3>{{ content.titulo }}</h3>
-      <p v-for="(parrafo, index) in content.parrafos" :key="index">{{ parrafo }}</p>
-    </div>
-    <p v-else class="preview-vacio">{{ t.previewEmpty }}</p>
-  </Transition>
+  <div class="preview-documento-contenedor">
+    <p v-if="content?.paginas" class="contador-paginas">
+      {{ content.paginas }} {{ content.paginas === 1 ? t.pageCountSingular : t.pageCountPlural }}
+    </p>
+    <Transition name="preview-fade" mode="out-in">
+      <!-- La key es solo el estilo (no el contenido): asi el texto se actualiza
+           en el lugar mientras el usuario escribe (sin parpadeo), y solo se
+           dispara la transicion cuando cambia el estilo elegido (paso 3). -->
+      <div v-if="content" :key="styleId ?? 'sin-estilo'" class="preview-documento" :class="`estilo-${styleId}`">
+        <h3>{{ content.titulo }}</h3>
+        <p v-for="(parrafo, index) in content.parrafos" :key="index">{{ parrafo }}</p>
+      </div>
+      <p v-else class="preview-vacio">{{ t.previewEmpty }}</p>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>
+.contador-paginas {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
 .preview-documento {
   padding: 2rem;
   border: 1px solid var(--border);

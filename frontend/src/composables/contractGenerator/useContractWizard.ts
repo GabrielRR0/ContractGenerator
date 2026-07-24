@@ -53,11 +53,14 @@ export function useContractWizard() {
     if (!templateId.value) return
     clearTimeout(previewTimeout)
     previewTimeout = setTimeout(async () => {
-      preview.value = await fetchPreview(templateId.value!, { ...data }, locale.value)
+      preview.value = await fetchPreview(templateId.value!, { ...data }, locale.value, styleId.value)
     }, 200)
   }
 
-  watch([templateId, data, locale], actualizarPreview, { deep: true })
+  // styleId entra al watch: antes el estilo no afectaba el preview de texto
+  // (el estilo visual del preview es puro CSS), pero ahora tambien determina
+  // la cantidad de paginas, asi que cambiar de estilo debe refrescarla.
+  watch([templateId, data, locale, styleId], actualizarPreview, { deep: true })
 
   function validarPasoActual(): boolean {
     errores.value = []

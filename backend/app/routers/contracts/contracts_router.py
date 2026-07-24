@@ -35,7 +35,7 @@ def preview(request: Request, response: Response, body: PreviewContractRequest) 
     # Contenido textual (titulo/parrafos/firmas) tolerante a datos
     # incompletos, para el preview en vivo mientras se completa el formulario.
     try:
-        return contract_service.preview_document(body.template_id, body.data, body.locale)
+        return contract_service.preview_document(body.template_id, body.data, body.locale, body.style_id)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 

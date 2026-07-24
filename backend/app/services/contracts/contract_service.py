@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 
 from app.schemas.contracts.contract_schemas import FieldSpec, GenerateContractRequest, StyleInfo, TemplateInfo
-from app.services.contracts.pdf.generator import STYLES, generate_pdf_bytes
+from app.services.contracts.pdf.generator import STYLES, count_pages, generate_pdf_bytes
 from app.services.contracts.templates import (
     contrato_arrendamiento_template,
     contrato_laboral_template,
@@ -66,11 +66,22 @@ def generate_document(request: GenerateContractRequest) -> bytes:
     return generate_pdf_bytes(request.style_id, content)
 
 
-def preview_document(template_id: str, data: dict[str, str], locale: str = "es") -> dict:
+def preview_document(template_id: str, data: dict[str, str], locale: str = "es", style_id: str | None = None) -> dict:
     # Version tolerante (sin validar campos requeridos) para el preview en
     # vivo del frontend mientras el usuario todavia esta completando el form.
     template_module = TEMPLATES.get(template_id)
     if template_module is None:
         raise ValueError(f"Plantilla desconocida: {template_id}")
 
-    return template_module.build_preview(data, locale)
+    content = template_module.build_preview(data, locale)
+
+    if style_id is not None:
+        try:
+            content["paginas"] = count_pages(style_id, content)
+        except ValueError:
+            # Estilo no reconocido (ej. catalogo todavia no cargo en el
+            # frontend): el preview de texto sigue siendo valido, se omite
+            # solo el conteo de paginas en vez de romper toda la respuesta.
+            pass
+
+    return content

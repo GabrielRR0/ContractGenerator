@@ -20,3 +20,17 @@ def generate_pdf_bytes(style_id: str, content: dict) -> bytes:
     pdf = FPDF()
     style_module.apply(pdf, content)
     return bytes(pdf.output())
+
+
+def count_pages(style_id: str, content: dict) -> int:
+    # Corre el mismo renderer real que generate_pdf_bytes (mismo apply()),
+    # pero sin serializar a bytes: alcanza con leer pdf.page al terminar,
+    # que fpdf2 incrementa en cada add_page() interno y al final del render
+    # equivale al total de paginas reales (no es una estimacion).
+    style_module = STYLES.get(style_id)
+    if style_module is None:
+        raise ValueError(f"Estilo desconocido: {style_id}")
+
+    pdf = FPDF()
+    style_module.apply(pdf, content)
+    return pdf.page

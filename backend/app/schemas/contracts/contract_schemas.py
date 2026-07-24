@@ -39,3 +39,6 @@ class PreviewContractRequest(BaseModel):
     template_id: str
     data: dict[str, str]
     locale: str = "es"
+    # Opcional: si viene, el preview tambien devuelve la cantidad real de
+    # paginas que va a tener el PDF con ese estilo (ver contract_service.py).
+    style_id: str | None = None

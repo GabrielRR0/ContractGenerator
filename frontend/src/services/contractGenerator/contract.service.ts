@@ -27,6 +27,7 @@ export interface PreviewContent {
   titulo: string
   parrafos: string[]
   firmas: string[]
+  paginas?: number
 }
 
 // Sin VITE_API_BASE_URL, queda '' y las rutas quedan relativas ('/api/...'):
@@ -47,11 +48,16 @@ export async function fetchStyles(locale: Locale): Promise<StyleInfo[]> {
   return response.json()
 }
 
-export async function fetchPreview(templateId: string, data: ContractData, locale: Locale): Promise<PreviewContent> {
+export async function fetchPreview(
+  templateId: string,
+  data: ContractData,
+  locale: Locale,
+  styleId: string | null,
+): Promise<PreviewContent> {
   const response = await fetch(`${API_BASE_URL}/api/contracts/preview`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ template_id: templateId, data, locale }),
+    body: JSON.stringify({ template_id: templateId, data, locale, style_id: styleId }),
   })
   if (!response.ok) throw new Error('No se pudo generar la vista previa')
   return response.json()
