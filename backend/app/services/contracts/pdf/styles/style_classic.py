@@ -29,7 +29,18 @@ def apply(pdf: FPDF, content: dict) -> None:
 
     pdf.ln(10)
     pdf.set_font("Times", "I", 12)
-    for firma in content["firmas"]:
-        pdf.cell(0, 7, "_" * 30, new_x="LMARGIN", new_y="NEXT")
-        pdf.cell(0, 7, firma, new_x="LMARGIN", new_y="NEXT")
-        pdf.ln(6)
+    # Firmas lado a lado (izquierda/derecha); reutiliza page_width ya
+    # calculado arriba para la regla del titulo.
+    firma_izq, firma_der = content["firmas"]
+    gap = 20
+    col_width = (page_width - gap) / 2
+    left_x = pdf.l_margin
+    right_x = pdf.l_margin + col_width + gap
+    line_y = pdf.get_y() + 7
+    pdf.line(left_x, line_y, left_x + col_width, line_y)
+    pdf.line(right_x, line_y, right_x + col_width, line_y)
+    pdf.set_xy(left_x, line_y)
+    pdf.cell(col_width, 7, firma_izq)
+    pdf.set_xy(right_x, line_y)
+    pdf.cell(col_width, 7, firma_der, new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(6)

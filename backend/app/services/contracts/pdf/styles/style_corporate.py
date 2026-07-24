@@ -32,10 +32,21 @@ def apply(pdf: FPDF, content: dict) -> None:
         pdf.ln(5)
 
     pdf.ln(8)
-    pdf.set_font("Helvetica", "B", 11)
-    for firma in content["firmas"]:
-        pdf.cell(0, 7, "_" * 30, new_x="LMARGIN", new_y="NEXT")
-        pdf.set_font("Helvetica", "", 11)
-        pdf.cell(0, 7, firma, new_x="LMARGIN", new_y="NEXT")
-        pdf.set_font("Helvetica", "B", 11)
-        pdf.ln(6)
+    pdf.set_font("Helvetica", "", 11)
+    # Firmas lado a lado (izquierda/derecha). El toggle bold/normal que tenia
+    # esta seccion existia solo porque la "linea" era texto en negrita; con
+    # una linea real ya no hace falta.
+    firma_izq, firma_der = content["firmas"]
+    page_width = pdf.w - pdf.l_margin - pdf.r_margin
+    gap = 20
+    col_width = (page_width - gap) / 2
+    left_x = pdf.l_margin
+    right_x = pdf.l_margin + col_width + gap
+    line_y = pdf.get_y() + 7
+    pdf.line(left_x, line_y, left_x + col_width, line_y)
+    pdf.line(right_x, line_y, right_x + col_width, line_y)
+    pdf.set_xy(left_x, line_y)
+    pdf.cell(col_width, 7, firma_izq)
+    pdf.set_xy(right_x, line_y)
+    pdf.cell(col_width, 7, firma_der, new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(6)
