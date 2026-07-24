@@ -19,9 +19,12 @@ class Settings(BaseSettings):
     rate_limit_storage_uri: str = "memory://"
     # Limite del endpoint mas costoso (genera el PDF).
     rate_limit_generate: str = "10/minute"
-    # Preview se llama mientras el usuario escribe, pero sigue siendo trabajo
-    # de CPU por request; limite mas laxo que generate.
-    rate_limit_preview: str = "30/minute"
+    # Preview se dispara en cada pausa al escribir (debounce de 400ms en el
+    # frontend) y ahora tambien renderiza el PDF real para contar paginas —
+    # con texto largo (clausulas de varios miles de caracteres) es facil
+    # superar varias decenas de llamadas por minuto solo tipeando normal,
+    # asi que el limite tiene que ser bastante mas laxo que generate.
+    rate_limit_preview: str = "90/minute"
     # Catalogos de solo lectura (templates/styles): limite laxo, mas que nada
     # anti-scraping/abuso automatizado.
     rate_limit_read: str = "60/minute"

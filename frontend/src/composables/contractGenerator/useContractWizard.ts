@@ -46,15 +46,19 @@ export function useContractWizard() {
   // cargados por el usuario (`data`) no se tocan, solo cambian las etiquetas.
   watch(locale, cargarCatalogos)
 
-  // Debounce chico: evita pegarle al backend en cada tecla mientras el
-  // usuario todavia esta escribiendo.
+  // Debounce: evita pegarle al backend en cada tecla mientras el usuario
+  // todavia esta escribiendo. 400ms (no 200ms) porque el preview ahora
+  // tambien renderiza el PDF real para contar paginas, y hay un limite de
+  // requests por minuto en el backend (RATE_LIMIT_PREVIEW) que con clausulas
+  // largas y pausas normales al escribir se alcanzaba mas rapido de lo
+  // esperado con un debounce mas chico.
   let previewTimeout: ReturnType<typeof setTimeout> | undefined
   async function actualizarPreview() {
     if (!templateId.value) return
     clearTimeout(previewTimeout)
     previewTimeout = setTimeout(async () => {
       preview.value = await fetchPreview(templateId.value!, { ...data }, locale.value, styleId.value)
-    }, 200)
+    }, 400)
   }
 
   // styleId entra al watch: antes el estilo no afectaba el preview de texto
