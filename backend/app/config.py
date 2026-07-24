@@ -26,10 +26,11 @@ class Settings(BaseSettings):
     # anti-scraping/abuso automatizado.
     rate_limit_read: str = "60/minute"
 
-    # Tamano maximo de body aceptado (bytes). Los payloads reales de este
-    # formulario pesan pocos KB; este limite es una defensa barata contra
-    # requests gigantes antes de que lleguen a Pydantic/fpdf2.
-    max_body_bytes: int = 20_000
+    # Tamano maximo de body aceptado (bytes). Da margen para clausulas largas
+    # (el documento puede ocupar varias paginas, ver max_length en los
+    # templates) sin dejar de ser una defensa barata contra requests
+    # gigantes antes de que lleguen a Pydantic/fpdf2.
+    max_body_bytes: int = 50_000
 
 
 settings = Settings()

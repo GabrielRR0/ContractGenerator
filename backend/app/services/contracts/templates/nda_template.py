@@ -20,12 +20,14 @@ FIELDS = [
         "label": {"es": "Parte reveladora", "en": "Disclosing party"},
         "placeholder": {"es": "Ej. Acme S.A.", "en": "E.g. Acme Inc."},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "parte_receptora",
         "label": {"es": "Parte receptora", "en": "Receiving party"},
         "placeholder": {"es": "Ej. Juan Perez", "en": "E.g. John Smith"},
         "type": "text",
+        "max_length": 200,
     },
     {"name": "fecha", "label": {"es": "Fecha", "en": "Date"}, "placeholder": {"es": "", "en": ""}, "type": "date"},
     {
@@ -36,6 +38,7 @@ FIELDS = [
             "en": "Describe the scope of confidentiality...",
         },
         "type": "textarea",
+        "max_length": 20000,
     },
 ]
 
@@ -44,7 +47,7 @@ class NdaData(BaseModel):
     parte_reveladora: str = Field(..., min_length=1, max_length=200)
     parte_receptora: str = Field(..., min_length=1, max_length=200)
     fecha: date
-    clausula_confidencialidad: str = Field(..., min_length=1, max_length=5000)
+    clausula_confidencialidad: str = Field(..., min_length=1, max_length=20000)
 
 
 def build_content(data: dict[str, str], locale: str = "es") -> dict:

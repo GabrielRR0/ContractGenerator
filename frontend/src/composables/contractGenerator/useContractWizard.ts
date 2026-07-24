@@ -10,7 +10,7 @@ import {
   type StyleInfo,
   type TemplateInfo,
 } from '../../services/contractGenerator/contract.service'
-import { validateRequiredFields } from '../../utils/validators/validateContractFields'
+import { validateFieldLengths, validateRequiredFields } from '../../utils/validators/validateContractFields'
 
 export function useContractWizard() {
   const { locale, t } = useLocale()
@@ -67,7 +67,15 @@ export function useContractWizard() {
     if (paso.value === 1 && !templateId.value) {
       errores.value = [t.value.errorChooseTemplate]
     } else if (paso.value === 2 && templateSeleccionado.value) {
-      errores.value = validateRequiredFields(data, templateSeleccionado.value.campos, t.value.fieldRequiredSuffix)
+      errores.value = [
+        ...validateRequiredFields(data, templateSeleccionado.value.campos, t.value.fieldRequiredSuffix),
+        ...validateFieldLengths(
+          data,
+          templateSeleccionado.value.campos,
+          t.value.fieldTooLongPrefix,
+          t.value.fieldTooLongSuffix,
+        ),
+      ]
     } else if (paso.value === 3 && !styleId.value) {
       errores.value = [t.value.errorChooseStyle]
     }

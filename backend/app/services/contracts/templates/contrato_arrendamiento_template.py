@@ -20,12 +20,14 @@ FIELDS = [
         "label": {"es": "Arrendador", "en": "Landlord"},
         "placeholder": {"es": "Ej. Inmobiliaria Norte S.A.", "en": "E.g. Northgate Realty Inc."},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "arrendatario",
         "label": {"es": "Arrendatario", "en": "Tenant"},
         "placeholder": {"es": "Ej. Carlos Ramirez", "en": "E.g. Charles Miller"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "fecha",
@@ -38,18 +40,21 @@ FIELDS = [
         "label": {"es": "Direccion del inmueble", "en": "Property address"},
         "placeholder": {"es": "Ej. Av. Libertador 1234, CABA", "en": "E.g. 1234 Main St, Springfield"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "monto_alquiler",
         "label": {"es": "Monto del alquiler", "en": "Rent amount"},
         "placeholder": {"es": "Ej. $180.000 mensuales", "en": "E.g. $1,800 per month"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "duracion_contrato",
         "label": {"es": "Duracion del contrato", "en": "Contract duration"},
         "placeholder": {"es": "Ej. 24 meses", "en": "E.g. 24 months"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "clausulas_adicionales",
@@ -59,6 +64,7 @@ FIELDS = [
             "en": "E.g. use conditions, pets, maintenance, security deposit...",
         },
         "type": "textarea",
+        "max_length": 20000,
     },
 ]
 
@@ -70,7 +76,7 @@ class ContratoArrendamientoData(BaseModel):
     direccion_inmueble: str = Field(..., min_length=1, max_length=200)
     monto_alquiler: str = Field(..., min_length=1, max_length=200)
     duracion_contrato: str = Field(..., min_length=1, max_length=200)
-    clausulas_adicionales: str = Field(..., min_length=1, max_length=5000)
+    clausulas_adicionales: str = Field(..., min_length=1, max_length=20000)
 
 
 def build_content(data: dict[str, str], locale: str = "es") -> dict:

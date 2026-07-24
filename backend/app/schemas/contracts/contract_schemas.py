@@ -8,6 +8,11 @@ class FieldSpec(BaseModel):
     label: str
     placeholder: str = ""
     type: str = "text"  # "text" | "date" | "textarea"
+    # Espeja el max_length del modelo Pydantic de la plantilla (ver
+    # templates/*.py): el frontend lo usa para mostrar un contador en vivo y
+    # bloquear el envio antes de pegarle al backend. None = sin limite
+    # (ej. el campo "fecha").
+    max_length: int | None = None
 
 
 class TemplateInfo(BaseModel):

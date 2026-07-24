@@ -5,6 +5,7 @@ export interface FieldSpec {
   label: string
   placeholder: string
   type: 'text' | 'date' | 'textarea'
+  max_length?: number | null
 }
 
 export interface TemplateInfo {
@@ -74,6 +75,12 @@ export async function generateContract(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ template_id: templateId, style_id: styleId, data, locale }),
   })
-  if (!response.ok) throw new Error('No se pudo generar el documento')
+  if (!response.ok) {
+    // El backend manda el motivo real en el body ({"detail": "..."}, ej. un
+    // campo que supera el max_length) — se muestra ese en vez de un mensaje
+    // generico, si esta disponible.
+    const body = await response.json().catch(() => null)
+    throw new Error(body?.detail ?? 'No se pudo generar el documento')
+  }
   return response.blob()
 }

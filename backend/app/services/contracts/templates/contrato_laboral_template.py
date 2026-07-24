@@ -20,12 +20,14 @@ FIELDS = [
         "label": {"es": "Empleador", "en": "Employer"},
         "placeholder": {"es": "Ej. Tech Solutions S.A.", "en": "E.g. Tech Solutions Inc."},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "empleado",
         "label": {"es": "Empleado", "en": "Employee"},
         "placeholder": {"es": "Ej. Maria Gonzalez", "en": "E.g. Mary Johnson"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "fecha",
@@ -38,12 +40,14 @@ FIELDS = [
         "label": {"es": "Puesto", "en": "Position"},
         "placeholder": {"es": "Ej. Disenadora UX/UI", "en": "E.g. UX/UI Designer"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "salario_mensual",
         "label": {"es": "Salario mensual", "en": "Monthly salary"},
         "placeholder": {"es": "Ej. $450.000", "en": "E.g. $4,500"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "jornada_laboral",
@@ -53,6 +57,7 @@ FIELDS = [
             "en": "E.g. Full-time, 40 hours per week",
         },
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "clausulas_adicionales",
@@ -62,6 +67,7 @@ FIELDS = [
             "en": "E.g. probationary period, benefits, vacation days, remote work conditions...",
         },
         "type": "textarea",
+        "max_length": 20000,
     },
 ]
 
@@ -73,7 +79,7 @@ class ContratoLaboralData(BaseModel):
     puesto: str = Field(..., min_length=1, max_length=200)
     salario_mensual: str = Field(..., min_length=1, max_length=200)
     jornada_laboral: str = Field(..., min_length=1, max_length=200)
-    clausulas_adicionales: str = Field(..., min_length=1, max_length=5000)
+    clausulas_adicionales: str = Field(..., min_length=1, max_length=20000)
 
 
 def build_content(data: dict[str, str], locale: str = "es") -> dict:

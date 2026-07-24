@@ -20,12 +20,14 @@ FIELDS = [
         "label": {"es": "Contratante", "en": "Client"},
         "placeholder": {"es": "Ej. Empresa ABC S.A.", "en": "E.g. ABC Company Inc."},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "proveedor",
         "label": {"es": "Proveedor", "en": "Provider"},
         "placeholder": {"es": "Ej. Juan Perez", "en": "E.g. John Smith"},
         "type": "text",
+        "max_length": 200,
     },
     {"name": "fecha", "label": {"es": "Fecha", "en": "Date"}, "placeholder": {"es": "", "en": ""}, "type": "date"},
     {
@@ -36,18 +38,21 @@ FIELDS = [
             "en": "E.g. Development of a corporate website",
         },
         "type": "textarea",
+        "max_length": 20000,
     },
     {
         "name": "monto",
         "label": {"es": "Monto", "en": "Fee"},
         "placeholder": {"es": "Ej. $500.000", "en": "E.g. $5,000"},
         "type": "text",
+        "max_length": 200,
     },
     {
         "name": "plazo",
         "label": {"es": "Plazo", "en": "Term"},
         "placeholder": {"es": "Ej. 6 meses", "en": "E.g. 6 months"},
         "type": "text",
+        "max_length": 200,
     },
 ]
 
@@ -56,7 +61,7 @@ class PrestacionServiciosData(BaseModel):
     contratante: str = Field(..., min_length=1, max_length=200)
     proveedor: str = Field(..., min_length=1, max_length=200)
     fecha: date
-    alcance_servicio: str = Field(..., min_length=1, max_length=5000)
+    alcance_servicio: str = Field(..., min_length=1, max_length=20000)
     monto: str = Field(..., min_length=1, max_length=200)
     plazo: str = Field(..., min_length=1, max_length=200)
 

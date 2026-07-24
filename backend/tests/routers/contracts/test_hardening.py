@@ -58,7 +58,7 @@ def test_post_generate_con_campo_demasiado_largo_responde_422():
             "parte_reveladora": "Acme S.A.",
             "parte_receptora": "Juan Perez",
             "fecha": "2026-07-22",
-            "clausula_confidencialidad": "a" * 5001,
+            "clausula_confidencialidad": "a" * 20001,
         },
     }
     assert len(str(payload)) < settings.max_body_bytes, "el payload debe quedar por debajo del limite global de body"

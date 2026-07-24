@@ -139,7 +139,7 @@ Copiar `.env.example` a `.env` y completar segun corresponda:
 - `FRONTEND_URL`: la URL del frontend en produccion (ej. `https://contract-generator-tuusuario.vercel.app`). Se suma a la lista de origenes permitidos por CORS en `app/main.py`, junto a `http://localhost:5173` (que **siempre** queda permitido, para que `npm run dev` funcione sin configurar nada). Sin esta variable, cualquier request desde un dominio que no sea `localhost:5173` es rechazada por el navegador (error de CORS), aunque el backend este funcionando bien.
 - `RATE_LIMIT_GENERATE` / `RATE_LIMIT_PREVIEW` / `RATE_LIMIT_READ`: limites por IP de cada grupo de endpoints (ver seccion 10). Valores por defecto razonables para el uso normal del formulario; no hace falta tocarlos salvo que se quiera ajustar la sensibilidad.
 - `RATE_LIMIT_STORAGE_URI`: donde vive el contador del rate limiter. `memory://` (default) alcanza para un solo proceso; en un deploy serverless con varias instancias corriendo en paralelo, cada una cuenta por separado y el limite deja de ser estricto. Para un limite global real, apuntar a Redis (Upstash tiene free tier y combina bien con Vercel).
-- `MAX_BODY_BYTES`: tamaño maximo de body aceptado por cualquier endpoint (default 20000 bytes).
+- `MAX_BODY_BYTES`: tamaño maximo de body aceptado por cualquier endpoint (default 50000 bytes).
 
 Al desplegar (Vercel, Render, Railway, Fly.io, etc.), estas variables se configuran en el panel del servicio, no en un archivo `.env` (ese archivo nunca se sube al repo, ver `.gitignore`).
 

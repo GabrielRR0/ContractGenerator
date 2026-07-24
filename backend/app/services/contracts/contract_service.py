@@ -35,6 +35,7 @@ def list_templates(locale: str = "es") -> list[TemplateInfo]:
                     label=pick(campo["label"], locale),
                     placeholder=pick(campo["placeholder"], locale),
                     type=campo["type"],
+                    max_length=campo.get("max_length"),
                 )
                 for campo in mod.FIELDS
             ],
